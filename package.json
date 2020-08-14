@@ -4,8 +4,8 @@
   "description": "a high performance video player for playing http-flv stream, can be compatible with IOS and Android system",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "babel src --out-dir dist --extensions .ts",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "rm -rf dist && tsc"
   },
   "repository": {
     "type": "git",
