@@ -1,5 +1,6 @@
 import SpeedDetector from '../utils/speed-detector';
-import { CustomBuffer, HandleDataFulled } from '../types';
+import { CustomBuffer, HandleDataFulled, HandleBufferInfoUpdated } from '../types';
+import { NORMALIZED_KBPS_LIST } from './constant';
 
 export default class FrameBuffer implements CustomBuffer {
   /*
@@ -19,8 +20,14 @@ export default class FrameBuffer implements CustomBuffer {
   private stashSize: number;
   private usedStash: number;
   private byteStart: number;
-  private handleDataFull: HandleDataFulled;
+
+  // network speed detect
   private speedDetector: SpeedDetector;
+  private lastKBps: number;
+
+  // handler
+  private handleDataFull: HandleDataFulled;
+  private handleBufferInfoUpdated: HandleBufferInfoUpdated;
 
   constructor(config: { bufferSize: number; stashSize: number }) {
     const { bufferSize, stashSize } = config;
@@ -36,10 +43,9 @@ export default class FrameBuffer implements CustomBuffer {
   add(chunk: ArrayBuffer) {
     this.speedDetector.addBytes(chunk.byteLength);
 
-    const kbps = this.speedDetector.getLastKbps();
-
-    if (kbps) {
-      console.log('kbps', kbps);
+    const KBps = this.normalizeKBps(this.speedDetector.getLastKBps());
+    if (KBps && this.lastKBps !== KBps) {
+      this.adjustStashSize(KBps);
     }
 
     if (this.usedStash + chunk.byteLength > this.stashSize) {
@@ -65,10 +71,22 @@ export default class FrameBuffer implements CustomBuffer {
     const chunkArray = new Uint8Array(chunk);
     stashArray.set(chunkArray, this.usedStash);
     this.usedStash += chunkArray.byteLength;
+
+    if (this.handleBufferInfoUpdated) {
+      this.handleBufferInfoUpdated({
+        byteRate: { value: KBps, unit: 'kbps' },
+        stashSize: this.stashSize,
+        bufferSize: this.bufferSize,
+      });
+    }
   }
 
   onDataFulled(handleDataFull: HandleDataFulled) {
     this.handleDataFull = handleDataFull;
+  }
+
+  onInfoUpdated(handleBufferInfoUpdated: HandleBufferInfoUpdated) {
+    this.handleBufferInfoUpdated = handleBufferInfoUpdated;
   }
 
   private consumeData(data: ArrayBuffer): number {
@@ -91,5 +109,23 @@ export default class FrameBuffer implements CustomBuffer {
       this.stashSize = newStashSize;
       this.bufferSize = newBufferSize;
     }
+  }
+
+  private normalizeKBps(KBps: number): number {
+    for (let index = 0; index < NORMALIZED_KBPS_LIST.length; index++) {
+      const nextKBps = NORMALIZED_KBPS_LIST[index + 1];
+      const curKBps = NORMALIZED_KBPS_LIST[index];
+
+      if (!nextKBps) {
+        // larger than the biggest kbps!
+        return curKBps;
+      } else if (KBps < nextKBps && KBps >= curKBps) {
+        return nextKBps;
+      }
+    }
+  }
+
+  private adjustStashSize(KBps: number) {
+    this.expandSize(KBps * 1024);
   }
 }

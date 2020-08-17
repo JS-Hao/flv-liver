@@ -26,4 +26,8 @@ export default class FlvLivePlayer implements Player {
     });
     this.io.open({ url: this.url });
   }
+
+  stop() {
+    this.io.close();
+  }
 }

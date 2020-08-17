@@ -4,12 +4,15 @@ import { Fetcher, FetcherConfig } from './types';
 import { CustomBuffer, HandleDataFulled } from '../types';
 
 export default class HttpFlvStreamFetcher implements Fetcher {
-  private dataAvailableCb: Function = null;
-  private completeCb: Function = null;
-  private receivedLength: number = 0;
-  private frameBuffer: CustomBuffer;
+  private dataAvailableCb: Function;
+  private completeCb: Function;
+  private receivedLength: number;
+  private frameBuffer: FrameBuffer;
+  private isClose: boolean;
 
   constructor() {
+    this.receivedLength = 0;
+    this.isClose = false;
     this.frameBuffer = new FrameBuffer({
       bufferSize: 3 * 1024 * 1024, // 3MB
       stashSize: 1024 * 36, // 2MB
@@ -18,6 +21,9 @@ export default class HttpFlvStreamFetcher implements Fetcher {
 
   open(config: FetcherConfig) {
     const { url } = config;
+
+    this.isClose = false;
+
     if (!window.fetch) {
       Logger.error(`es6 native method 'fetch' is not support`);
     } else {
@@ -25,8 +31,15 @@ export default class HttpFlvStreamFetcher implements Fetcher {
     }
   }
 
+  close() {
+    this.isClose = true;
+  }
+
   onDataAvailable(callback: HandleDataFulled): void {
     this.frameBuffer.onDataFulled(callback);
+    this.frameBuffer.onInfoUpdated((data) => {
+      console.log('byteRate:', data.byteRate.value + data.byteRate.unit, 'stashSize', data.stashSize, 'bufferSize', data.bufferSize);
+    });
   }
 
   onComplete(callback: Function): void {
@@ -38,8 +51,6 @@ export default class HttpFlvStreamFetcher implements Fetcher {
       method: 'GET',
       mode: 'cors',
       cache: 'default',
-      // The default policy of Fetch API in the whatwg standard
-      // Safari incorrectly indicates 'no-referrer' as default policy, fuck it
       referrerPolicy: 'no-referrer-when-downgrade',
     };
 
@@ -69,7 +80,7 @@ export default class HttpFlvStreamFetcher implements Fetcher {
 
         if (data.done) {
           this.completeCb && this.completeCb(data);
-        } else {
+        } else if (!this.isClose) {
           this.frameBuffer.add(data.value);
           // this.dataAvailableCb && this.dataAvailableCb(data);
           this.loop(reader);

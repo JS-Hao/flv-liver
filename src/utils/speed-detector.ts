@@ -31,18 +31,23 @@ export default class SpeedDetector {
     this.totalBytes += byteLength;
   }
 
-  getCurrentKbps(): number {
+  getCurrentKBps(): number {
     this.addBytes(0);
-    const intervalSeconds = (this.getCurrentTimeStamp() - this.lastTimeStamp) / 1000;
+    let intervalSeconds = (this.getCurrentTimeStamp() - this.lastTimeStamp) / 1000;
+    if (intervalSeconds === 0) {
+      intervalSeconds = 1;
+    }
     return this.intervalBytes / 1024 / intervalSeconds;
   }
 
-  getLastKbps(): number {
+  getLastKBps(): number {
     this.addBytes(0);
 
     if (this.lastIntervalBytes) {
+      // due to the network fluctuates, we should wait for enough time to calculate the byte rate
+      // maybe 500ms is enough?
       if (this.getCurrentTimeStamp() - this.lastTimeStamp >= 500) {
-        return this.getCurrentKbps();
+        return this.getCurrentKBps();
       } else {
         return this.lastIntervalBytes / 1024;
       }
