@@ -1,3 +1,4 @@
+import SpeedDetector from '../utils/speed-detector';
 import { CustomBuffer, HandleDataFulled } from '../types';
 
 export default class FrameBuffer implements CustomBuffer {
@@ -19,6 +20,7 @@ export default class FrameBuffer implements CustomBuffer {
   private usedStash: number;
   private byteStart: number;
   private handleDataFull: HandleDataFulled;
+  private speedDetector: SpeedDetector;
 
   constructor(config: { bufferSize: number; stashSize: number }) {
     const { bufferSize, stashSize } = config;
@@ -28,9 +30,18 @@ export default class FrameBuffer implements CustomBuffer {
     this.stashSize = stashSize;
     this.bufferSize = bufferSize;
     this.stashBuffer = new ArrayBuffer(this.bufferSize);
+    this.speedDetector = new SpeedDetector();
   }
 
   add(chunk: ArrayBuffer) {
+    this.speedDetector.addBytes(chunk.byteLength);
+
+    const kbps = this.speedDetector.getLastKbps();
+
+    if (kbps) {
+      console.log('kbps', kbps);
+    }
+
     if (this.usedStash + chunk.byteLength > this.stashSize) {
       const stashArray = new Uint8Array(this.stashBuffer, 0, this.bufferSize);
       const stashUsedArray = new Uint8Array(this.stashBuffer, 0, this.usedStash);
