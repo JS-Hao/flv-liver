@@ -1,7 +1,5 @@
-export interface CustomBuffer {
-  add(chunk: ArrayBuffer): void;
-
-  onDataFulled(handleDataFulled: HandleDataFulled): void;
+export enum MediaType {
+  FLV = 'flv',
 }
 
 export interface HandleDataFulled {
@@ -11,3 +9,5 @@ export interface HandleDataFulled {
 export interface HandleBufferInfoUpdated {
   (info: { byteRate: { value: number; unit: string }; stashSize: number; bufferSize: number }): void;
 }
+
+export interface HandlePlayerInfoUpdated extends HandleBufferInfoUpdated {}

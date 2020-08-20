@@ -1,8 +1,9 @@
 import SpeedDetector from '../utils/speed-detector';
-import { CustomBuffer, HandleDataFulled, HandleBufferInfoUpdated } from '../types';
+import { HandleDataFulled, HandleBufferInfoUpdated } from '../types';
 import { NORMALIZED_KBPS_LIST } from './constant';
+import Logger from '../utils/logger';
 
-export default class FrameBuffer implements CustomBuffer {
+export default class FrameBuffer {
   /*
    *
    * |- usedStash -| -- remainStash -- |              |
@@ -41,6 +42,8 @@ export default class FrameBuffer implements CustomBuffer {
   }
 
   add(chunk: ArrayBuffer) {
+    // return this.consumeData(new Uint8Array(chunk));
+
     this.speedDetector.addBytes(chunk.byteLength);
 
     const KBps = this.normalizeKBps(this.speedDetector.getLastKBps());
@@ -90,8 +93,11 @@ export default class FrameBuffer implements CustomBuffer {
   }
 
   private consumeData(data: ArrayBuffer): number {
-    this.handleDataFull && this.handleDataFull(data, this.byteStart);
-    return data.byteLength;
+    if (!this.handleDataFull) {
+      Logger.error('no handleDataFull in FrameBuffer!');
+    }
+
+    return this.handleDataFull(data, this.byteStart);
   }
 
   private expandSize(targetSize: number) {
@@ -108,6 +114,7 @@ export default class FrameBuffer implements CustomBuffer {
 
       this.stashSize = newStashSize;
       this.bufferSize = newBufferSize;
+      this.stashBuffer = newStashBuffer;
     }
   }
 

@@ -2,17 +2,34 @@
   <head>
     <title>fly-ios-player demo</title>
     <meta charset="utf-8" />
+    <!-- <script src="./prod.all.wasm.combine.js"></script> -->
   </head>
   <body>
+    <button class="play">play</button>
+    <button class="stop">stop</button>
+    <div class="info"></div>
     <div id="app"></div>
     <script src="./flv-live-player.js"></script>
     <script>
-      const container = document.querySelector('#app');
-      const flplayer = new FlvLivePlayer({
+      const el = (selector) => document.querySelector(selector);
+      const container = el('#app');
+      const play = el('.play');
+      const stop = el('.stop');
+      const info = el('.info');
+
+      const flsPlayer = (window.flsPlayer = new FlsPlayer({
         container,
         url: 'http://live-pull-bs.imlizhi.com/live/jshao.flv',
-      });
-      window.flplayer = flplayer;
+        hasAudio: true,
+        hasVideo: true,
+      }));
+
+      // flsPlayer.onInfoUpdated((data) => {
+      //   info.innerText = `byteRate: ${data.byteRate.value}${data.byteRate.unit}, stashSize: ${data.stashSize}, bufferSize: ${data.bufferSize}`;
+      // });
+
+      play.addEventListener('click', () => flsPlayer.open());
+      stop.addEventListener('click', () => flsPlayer.close());
     </script>
   </body>
 </html>

@@ -1,11 +1,13 @@
-export interface Fetcher {
-  open(config: FetcherConfig): void;
+import { HandleDataFulled, HandleBufferInfoUpdated } from 'types';
 
-  onDataAvailable(callback: Function): void;
+export interface IO {
+  open({ url }: { url: string }): void;
+
+  close(): void;
+
+  onChunkArrival(callback: HandleDataFulled): void;
+
+  onBufferInfoUpdated(callback: HandleBufferInfoUpdated): void;
 
   onComplete(callback: Function): void;
-}
-
-export interface FetcherConfig {
-  url: string;
 }
