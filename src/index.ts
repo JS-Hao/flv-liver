@@ -1,5 +1,5 @@
-import FlsPlayer from './player';
+import FlvLiver from './player';
 
-export { FlsPlayer };
+export { FlvLiver };
 
-export default FlsPlayer;
+export default FlvLiver;

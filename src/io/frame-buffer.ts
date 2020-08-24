@@ -42,8 +42,6 @@ export default class FrameBuffer {
   }
 
   add(chunk: ArrayBuffer) {
-    // return this.consumeData(new Uint8Array(chunk));
-
     this.speedDetector.addBytes(chunk.byteLength);
 
     const KBps = this.normalizeKBps(this.speedDetector.getLastKBps());

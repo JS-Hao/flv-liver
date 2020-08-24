@@ -31,7 +31,6 @@ export default class Controller {
 
   open() {
     // io --> buffer --> processor
-    // this.io.onChunkArrival(this.processor.process.bind(this.processor));
     this.io.onChunkArrival(this.processor.process.bind(this.processor));
 
     // processor --> buffer --> renderer

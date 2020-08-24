@@ -11,25 +11,25 @@
     <div id="app"></div>
     <script src="./flv-live-player.js"></script>
     <script>
-      const el = (selector) => document.querySelector(selector);
-      const container = el('#app');
-      const play = el('.play');
-      const stop = el('.stop');
-      const info = el('.info');
+      // const el = (selector) => document.querySelector(selector);
+      // const container = el('#app');
+      // const play = el('.play');
+      // const stop = el('.stop');
+      // const info = el('.info');
 
-      const flsPlayer = (window.flsPlayer = new FlsPlayer({
-        container,
-        url: 'http://live-pull-bs.imlizhi.com/live/jshao.flv',
-        hasAudio: true,
-        hasVideo: true,
-      }));
+      // const flsPlayer = (window.flsPlayer = new FlsPlayer({
+      //   container,
+      //   url: 'http://live-pull-bs.imlizhi.com/live/jshao.flv',
+      //   hasAudio: true,
+      //   hasVideo: true,
+      // }));
 
-      // flsPlayer.onInfoUpdated((data) => {
-      //   info.innerText = `byteRate: ${data.byteRate.value}${data.byteRate.unit}, stashSize: ${data.stashSize}, bufferSize: ${data.bufferSize}`;
-      // });
+      // // flsPlayer.onInfoUpdated((data) => {
+      // //   info.innerText = `byteRate: ${data.byteRate.value}${data.byteRate.unit}, stashSize: ${data.stashSize}, bufferSize: ${data.bufferSize}`;
+      // // });
 
-      play.addEventListener('click', () => flsPlayer.open());
-      stop.addEventListener('click', () => flsPlayer.close());
+      // play.addEventListener('click', () => flsPlayer.open());
+      // stop.addEventListener('click', () => flsPlayer.close());
     </script>
   </body>
 </html>

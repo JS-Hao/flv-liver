@@ -14,7 +14,7 @@ export default class StreamLoader implements IO {
     this.receivedLength = 0;
     this.isClose = false;
     this.frameBuffer = new FrameBuffer({
-      bufferSize: 512 * 1024, // 3MB
+      bufferSize: 512 * 1024, // 512KB
       stashSize: 1024 * 36, // 2MB
     });
   }

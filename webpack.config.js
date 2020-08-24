@@ -13,7 +13,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: [/node_modules/, path.resolve('./src/vondor')],
+        exclude: /node_modules/,
         use: ['babel-loader'],
       },
 
