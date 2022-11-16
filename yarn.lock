@@ -1730,12 +1730,6 @@ detect-node@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
 
-dida.js@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/dida.js/-/dida.js-1.0.1.tgz#76b72d27f016ec3fa6f166013468b7f5439b25ca"
-  dependencies:
-    option-validator "^2.0.5"
-
 diffie-hellman@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz#40e8ee98f55a2149607146921c63e1ae5f3d2875"
@@ -2083,16 +2077,6 @@ flush-write-stream@^1.0.0:
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
-
-flvplayer@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/flvplayer/-/flvplayer-1.1.8.tgz#81e432b9ebcfac44869d182177eff196b1a04630"
-  dependencies:
-    dida.js "^1.0.1"
-    option-validator "^2.0.5"
-    screenfull "^5.0.2"
-    yuv-buffer "^1.0.0"
-    yuv-canvas "^1.2.6"
 
 follow-redirects@^1.0.0:
   version "1.13.0"
@@ -2734,8 +2718,8 @@ loader-runner@^2.4.0:
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.4.0.tgz#ed47066bfe534d7e84c4c7b9998c2a75607d9357"
 
 loader-utils@^1.0.2, loader-utils@^1.2.3, loader-utils@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.4.0.tgz#c579b5e34cb34b1a74edc6c1fb36bfa371d5a613"
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-1.4.2.tgz#29a957f3a63973883eb684f10ffd3d151fec01a3"
   dependencies:
     big.js "^5.2.2"
     emojis-list "^3.0.0"
@@ -2891,7 +2875,11 @@ minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.2.0, minimist@^1.2.5:
+minimist@^1.2.0:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
+
+minimist@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
 
@@ -3125,12 +3113,6 @@ optimist@^0.6.1:
   dependencies:
     minimist "~0.0.1"
     wordwrap "~0.0.2"
-
-option-validator@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/option-validator/-/option-validator-2.0.5.tgz#1e4e188eb7d2cad14347a7a2d96fc5ac6077a5fc"
-  dependencies:
-    kind-of "^6.0.2"
 
 original@^1.0.0:
   version "1.0.2"
@@ -3651,10 +3633,6 @@ schema-utils@^2.6.5, schema-utils@^2.6.6, schema-utils@^2.7.0:
     "@types/json-schema" "^7.0.4"
     ajv "^6.12.2"
     ajv-keywords "^3.4.1"
-
-screenfull@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/screenfull/-/screenfull-5.0.2.tgz#b9acdcf1ec676a948674df5cd0ff66b902b0bed7"
 
 select-hose@^2.0.0:
   version "2.0.0"
@@ -4449,11 +4427,3 @@ yargs@^13.3.2:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^13.1.2"
-
-yuv-buffer@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/yuv-buffer/-/yuv-buffer-1.0.0.tgz#09a454858d74df2bc31cd588edd70ffcb86bfc9a"
-
-yuv-canvas@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/yuv-canvas/-/yuv-canvas-1.2.6.tgz#246452196fca9e581f09abed9b90c94aff6014e2"
